@@ -11,6 +11,7 @@ for line in inf:
         break;
 
 # parse records
+sep = '|'
 objs = []
 for line in inf:
     key = line[:2]
@@ -22,10 +23,6 @@ for line in inf:
     if key == 'ID':
         obj = {}
     value = line[5:].rstrip()
-    if key == 'CC':
-        sep = ' '
-    else:
-        sep = '|'
     if key == 'DR':
         value = value.replace('; ', '=')
     if key in obj:
