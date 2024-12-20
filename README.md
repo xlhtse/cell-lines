@@ -1,4 +1,4 @@
-# Cellosaurus
+# Cell line annotation
 
 This parses cellosaurus data into a table.
 
