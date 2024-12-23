@@ -18,10 +18,10 @@ sum <- apply(h.omics, 1, function(x) paste(colnames(h.omics)[x == 1], collapse =
 sum <- data.frame(id = row.names(h.omics), omics = sum, row.names = NULL)
 
 # Combine all information 
-c <- merge(h.cell, sum, by = "id", all.x = TRUE)
+annotation <- merge(h.cell, sum, by = "id", all.x = TRUE)
 
 # generate list for each cell line type
-subset <- split(c, c$category)
+subset <- split(annotation, c$category)
 
 for (category_name in names(subset)) {
   category <- gsub(" ", "-", category_name)  # Replace whitespace with underscores
