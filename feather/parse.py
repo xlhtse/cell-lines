@@ -75,5 +75,7 @@ df.rename(
     inplace = True
 )
 
+
 feather.write_feather(df, 'cellosaurus.feather')
 
+df.to_csv('cellosaurus.csv', index=False)

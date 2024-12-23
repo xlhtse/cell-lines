@@ -1,7 +1,13 @@
 library(io)
 library(arrow)
+library(feather)
+library(data.table)
 
-d <- qread("../feather/cellosaurus.feather")
+# read feather file 
+# d <- qread("../feather/cellosaurus.feather")
+
+# read csv file
+d <- fread("../feather/cellosaurus.csv")
 
 table(d$category)
 
@@ -78,5 +84,5 @@ table(rowSums(omics.avail))
 sort(colSums(omics.avail))
 
 qwrite(d, "cellosaurus.rds")
-qwrite(omics.avail, "cellosaurus_omics.rds");
+qwrite(omics.avail, "cellosaurus_omics.rds")
 

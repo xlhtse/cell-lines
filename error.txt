@@ -1,0 +1,13 @@
+>library(io)
+>library(arrow)
+>library(feather)
+
+> d <- qread("../feather/cellosaurus.feather")
+Error in .qio_error(file, type) : File type `feather` is not supported
+
+> d <- read_feather("../feather/cellosaurus.feather")
+Error: Invalid: Not a feather file
+
+
+
+--> added 
