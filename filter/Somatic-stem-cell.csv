@@ -1,3 +1,0 @@
-"id","accession","synonyms","category","disease","origin","geo","encode","omics"
-"Edom22","CVCL_L430","","Somatic stem cell","","","GSM607986|GSM608016|GSM1906542",NA,"Transcriptome analysis by microarray|DNA methylation analysis"
-"LM-NSC008","CVCL_LJ42","LM008; L-MYC-Neural Stem Cell 008","Somatic stem cell","","","GSM2228431|GSM2228432|GSM2228435",NA,"Transcriptome analysis by RNAseq|Deep exome analysis|CNV analysis"
