@@ -9,7 +9,7 @@ IFS=$'\n\t'
 #   the age at sampling
 #   the full reference records (authors, title, journal)
 
-curl -O https://ftp.expasy.org/databases/cellosaurus/cellosaurus.obo
+# curl -O https://ftp.expasy.org/databases/cellosaurus/cellosaurus.obo
 curl -O https://ftp.expasy.org/databases/cellosaurus/cellosaurus.txt
 curl -O https://ftp.expasy.org/databases/cellosaurus/cellosaurus_refs.txt
 curl -O https://ftp.expasy.org/databases/cellosaurus/cellosaurus_xrefs.txt

@@ -1,0 +1,7 @@
+"id","accession","synonyms","category","disease","origin","geo","encode","omics"
+"5-8F","CVCL_C528","58F; SUNE-1-5-8F","Hybrid cell line","","","GSM375842",NA,"Transcriptome analysis by RNAseq|Transcriptome analysis by microarray"
+"6-10B","CVCL_C529","","Hybrid cell line","","","GSM375843",NA,"Transcriptome analysis by microarray"
+"CNE-1","CVCL_6888","CNE1; CNE","Hybrid cell line","","","GSM375845",NA,"Transcriptome analysis by RNAseq"
+"CNE-2","CVCL_6889","CNE2","Hybrid cell line","","","GSM375846",NA,"Transcriptome analysis by RNAseq"
+"EA.hy 926","CVCL_3901","EA. hy 926; EA hy 926; EA-hy926; EAhy 926; EAHY-926; EA.Hy926; EA.hy926; EAhy926; EaHy926; Eahy926","Hybrid cell line","","","GSM46371|GSM46380|GSM46382|GSM46383|GSM46384|GSM46385|GSM46392|GSM46393",NA,"Transcriptome analysis by microarray"
+"MGC-803","CVCL_5334","MGC803; MGc80-3","Hybrid cell line","","","GSM844588|GSM1374671",NA,"Transcriptome analysis by RNAseq|Transcriptome analysis by microarray|SNP array analysis|Secretome proteome analysis by 2D-DE/MS"

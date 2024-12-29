@@ -1,0 +1,9 @@
+"id","accession","synonyms","category","disease","origin","geo","encode","omics"
+"ASP1-UPIC","CVCL_C3G3","Alport Syndrome Patient 1-Urine Podocyte Immortalized Cell line","Conditionally immortalized cell line","NCIt; C34842; Alport syndrome|ORDO; Orphanet_63; Alport syndrome","","GSM3933297|GSM3933298|GSM3933299",NA,"Transcriptome analysis by RNAseq"
+"ASP2-UPIC","CVCL_C3G4","Alport Syndrome Patient 2-Urine Podocyte Immortalized Cell line","Conditionally immortalized cell line","NCIt; C34842; Alport syndrome|ORDO; Orphanet_63; Alport syndrome","","GSM3933294|GSM3933295|GSM3933296",NA,"Transcriptome analysis by RNAseq"
+"ASP3-UPIC","CVCL_C3G5","Alport Syndrome Patient 3-Urine Podocyte Immortalized Cell line","Conditionally immortalized cell line","NCIt; C34842; Alport syndrome|ORDO; Orphanet_63; Alport syndrome","","GSM3933300|GSM3933301|GSM3933302",NA,"Transcriptome analysis by RNAseq"
+"C-UPIC","CVCL_C3G6","Control-Urine Podocyte Immortalized Cell line","Conditionally immortalized cell line","","","GSM3933303|GSM3933304|GSM3933305",NA,"Transcriptome analysis by RNAseq"
+"CIHP-1","CVCL_W186","Conditionally Immortalized Human Podocytes-1; AB8/13; AB 8/13; hiPOD; ciPOD","Conditionally immortalized cell line","","","GSM1199237|GSM1199238|GSM1199239|GSM1199240|GSM1199241|GSM1199242",NA,"Transcriptome analysis by microarray"
+"EndoC-betaH2","CVCL_IS71","EndoC-BH2","Conditionally immortalized cell line","","","GSE48101",NA,"Transcriptome analysis by microarray"
+"hFOB 1.19","CVCL_3708","hFOB1.19; hFOB","Conditionally immortalized cell line","","","GSM320833",NA,NA
+"imWilms10","CVCL_DF34","ImWilms10 T; ImWilms10T; IM-WT-10","Conditionally immortalized cell line","NCIt; C40407; Kidney Wilms tumor|ORDO; Orphanet_654; Nephroblastoma","","GSM1831637|GSM1831638",NA,"Transcriptome analysis by microarray|SNP array analysis"
