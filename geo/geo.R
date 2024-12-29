@@ -4,8 +4,11 @@ BiocManager::install("GEOquery")
 library(GEOquery)
 
 # Load file
-ESC <- read.csv("../filter/Embryonic-stem-cell.csv")
-CS <- read.csv("../filter/Cancer-cell-line.csv")
+ESC_annotation <- read.csv("../filter/Embryonic-stem-cell.csv")
+CS_annotation <- read.csv("../filter/Cancer-cell-line.csv")
+
+ESC <- ESC_annotation[ , c("id", "geo")]
+CS <- CS_annotation[ , c("id", "geo")]
 
 # Function to get platform ID and GSE ID from GSM ID
 get <- function(gsm_id) {
@@ -32,7 +35,9 @@ grabGSE <- function(geo_column) {
     paste(grep("^GSE", unlist(strsplit(geo, "\\|")), value = TRUE), collapse = "|")
   })
 }
-data$c.gse <- grabGSE(data$geo)
+
+ESC$c.gse <- grabGSE(ESC$geo)
+CS$c.gse <- grabGSE(CS$geo)
 
 # Grab GSM IDs and create the 'gsm' column
 grabGSM <- function(geo_column) {
@@ -40,7 +45,8 @@ grabGSM <- function(geo_column) {
     paste(grep("^GSM", unlist(strsplit(geo, "\\|")), value = TRUE), collapse = "|")
   })
 }
-data$gsm <- grabGSM(data$geo)
+ESC$gsm <- grabGSM(ESC$geo)
+CS$gsm <- grabGSM(CS$geo)
 
 # Function to query GSE IDs and platform IDs from the 'gsm' column
 query <- function(gsm_column) {
@@ -77,10 +83,10 @@ query <- function(gsm_column) {
 fetchESC <- query(ESC$gsm)
 fetchCS <- query(CS$gsm)
 
+
 # Add gse column to data
 ESC$gse <- fetchESC$gse
 CS$gse <- fetchCS$gse
-
 
 # Create a new table with platform IDs as columns
 ESC_GPL <- fetchESC$gpl
@@ -109,5 +115,5 @@ for (pid in CS_platform[!is.na(CS_platform)]) {
     }
   })
 }
-write.csv("ESC_result.csv")
-write.csv("CS_result.csv")
+write.csv(ESC_result, file = "ESC_result.csv")
+write.csv(CS_result, file = "CS_result.csv")
