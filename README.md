@@ -31,3 +31,16 @@ Rscript preprocess.R
 
 Then, the output `rds` files will be in the `rds` directory.
 
+4. Filter and obtain human cell lines by running filter.R
+```
+cd filter
+Rscript filter.R
+```
+
+5. Fetch GEO information from embryonic stem cells
+``` 
+( cd geo && ./run_ESC.sh )
+
+```
+
+
