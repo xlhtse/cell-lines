@@ -43,4 +43,10 @@ Rscript filter.R
 
 ```
 
+6. Download cancer cell line data from CCLE and GDSC
+```
+( cd cell-lines && ./get.sh )
+```
+This will create folders ccle and gdsc and download data into them.
+
 
