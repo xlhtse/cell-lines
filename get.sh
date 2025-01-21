@@ -44,9 +44,7 @@ urls=(
 								    # CCLE dataset download
 								    # https://depmap.org/portal/data_page/?tab=allData
 
-								    mkdir -p ccle/expr ccle/met
-
-								    #!/bin/bash
+								    mkdir -p ccle
 
 								    # Array of URLs
 								    urls=(
