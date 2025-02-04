@@ -3,8 +3,6 @@ library(mombf)
 
 # Import data
 d <- read.csv(file = "~/projects/cell-lines/gdsc/expr/rnaseq_tpm_20220624.csv", header = TRUE)
-met <- read.table(file = "~/projects/cell-lines/gdsc/met/F2_METH_CELL_DATA.txt", header = FALSE, sep = "\t")
-annot <- read_excel(path = "~/projects/cell-lines/gdsc/cell-annot.xlsx")
 
 expr <- d[ -(1:4), -1] 
 colnames(expr) <- d[1, -1]
