@@ -16,7 +16,7 @@ tpm <- depmap_TPM()
 # eh_tpm <- eh[["EH7292"]]
 
 
-# formatting
+# Formatting
 expr <- tpm %>%
   select(cell_line, gene_name, rna_expression) %>%
   pivot_wider(names_from = gene_name, values_from = rna_expression) %>%
@@ -28,12 +28,16 @@ gene_ref <- read.csv(file = "~/projects/cell-lines/hTFs.csv", row.names = 2)[, -
 tf <- gene_ref[gene_ref$Is.TF. == "Yes", 1]
 
 # y
-tert <- expr[, "TERT"]
+tert <- expr[["TERT"]]
+
 
 # x
 tf.activities <- as.matrix(expr[ , colnames(expr) %in% tf])
+
+
+# backup parameters
 tf.candidates <- colnames(tf.activities)
-str(tf.activities)
+cell_ls <- rownames(tf.activities)
 
 # check
 str(tert)
@@ -87,13 +91,10 @@ model_coef_plot.fil <- function(coef, title, filename) {
 model_coef_plot.fil(beta.fil, "TERT regulation model", "~/projects/cell-lines/ccle/mombf-tert-ccle.png")
 
 
-# positive control GAPBA exist
-any(tf == "GABPA")
-any(colnames(expr) == "GABPA")
-any(tf.candidates == "GABPA") 
+# check control GAPBA 
 any(rownames(output) == "GABPA") 
 any(tf.candidates.fil == "GABPA") # margpp of GABPA < 0.5
-
+# GABPA not sig. 
 ctr <- output[rownames(output) == "GABPA", ] 
-
+print(ctr)
 
