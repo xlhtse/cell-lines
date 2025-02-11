@@ -65,7 +65,6 @@ mombf_model <- function(target, tf.activities) {
 
 beta <- mombf_model(target_clean, tf_clean)
 
-
 # or
 fit <- modelSelection(target_clean, tf_clean, 
                       family = "normal",
@@ -73,6 +72,8 @@ fit <- modelSelection(target_clean, tf_clean,
                       verbose = FALSE)
 sampl <- rnlp(msfit=fit)
 beta <- colMeans(sampl)[c(-1, -ncol(sampl))]
+
+
 
 # plot beta -- function adapted from celine
 model_coef_plot <-function(coef,title){
@@ -86,28 +87,33 @@ model_coef_plot <-function(coef,title){
 model_coef_plot(beta,"TERT regulation model")
 
 
-# filter data
-output <- as.data.frame(coef(fit))
 
 # filter with margpp > 0.5
-filter <- output[output$margpp >= 0.5, ]
 filter <- output[output$margpp >= 0.5, ]
 tf.candidates.fil <- rownames(filter)[-c(1, nrow(filter))]
 
 beta.fil <- beta[names(beta) %in% tf.candidates.fil]
 
-model_coef_plot.fil <-function(coef,title){
+model_coef_plot.fil <- function(coef, title, filename) {
   gene_names <- tf.candidates.fil
-  par(mar = c(5, 4, 4, 2) + 0.5,cex.axis=0.8, mgp = c(3.5, 0.8, 0))
+  png(filename)  # Open a PNG device
+  par(mar = c(5, 4, 4, 2) + 0.5, cex.axis = 0.8, mgp = c(3.5, 0.8, 0))
   barplot(coef, xlab = "Gene Names", ylab = "Coefficients",
           names.arg = gene_names, las = 2, cex.names = 0.6,
           main = title)
+  dev.off()  # Close the PNG device
 }
 
-model_coef_plot.fil(beta.fil,"TERT regulation model")
+model_coef_plot.fil(beta.fil, "TERT regulation model", "~/projects/cell-lines/gdsc/mombf-tert-gdsc.png")
 
 
-### positive control GAPBA exist
+# save mombf output
+output <- as.data.frame(coef(fit))
+write.csv(output, file = "~/projects/cell-lines/gdsc/mombf-gdsc.csv")
+
+
+
+# check for GABPA control
 any(tf == "GABPA")
 any(expr == "GABPA")
 any(tf.candidates == "GABPA") 
