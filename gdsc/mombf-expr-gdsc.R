@@ -3,8 +3,15 @@ library(mombf)
 # Import data
 d <- read.csv(file = "~/projects/cell-lines/gdsc/expr/rnaseq_tpm_20220624.csv", header = TRUE)
 
-expr <- d[ -(1:4), -1] 
+# data formatting
+expr <- d[-(1:4), -1] 
 colnames(expr) <- d[1, -1]
+expr <- t(expr)
+colnames(expr) <- expr[1,]
+expr <- expr[-1,]
+
+expr_num <- as.data.frame(apply(expr, 2, as.numeric))
+rownames(expr_num) <- rownames(expr)
 
 # Import gene list references & extract TFs
 # https://humantfs.ccbr.utoronto.ca/download.php
@@ -14,37 +21,24 @@ tf <- gene_ref[gene_ref$Is.TF. == "Yes", 1]
 
 
 # y
-tert <- expr[expr[, 1] == "TERT", ] 
-rownames(tert) <- tert[, 1]
-target <- t(tert[, -1]) # transpose the table
+tert <- expr_num[ ,"TERT", drop = FALSE]
 
 
 # x
-# data formatting/cleaning
-tf.activities <- expr[expr[, 1] %in% tf, ]
-rownames(tf.activities) <- tf.activities[, 1]
-tf.activities <- tf.activities[ ,-1]
+tf.activities <- expr_num[ , colnames(expr_num) %in% tf]
 
-tf.candidates <- rownames(tf.activities)
-cell_ls <- colnames(tf.activities)
+# backup parameters
+tf.candidates <- colnames(tf.activities)
+cell_ls <- rownames(tf.activities)
 
-# convert data to number
-tf.activities <- data.frame(lapply(tf.activities, 
-                                   function(x) as.numeric(as.character(x))))
-str(tf.activities)
-rownames(tf.activities) <- tf.candidates
-colnames(tf.activities) <- cell_ls
-
-# transpose the table
-tf.activities <- t(tf.activities)
-
-identical(rownames(target), rownames(tf.activities))
-sum(is.na(target))
+# check
+identical(length(tert), nrow(tf.activities))
+sum(is.na(tert))
 sum(is.na(tf.activities)) # tf.activities contains NA values
 
 # filter rows with NA
-tf_clean <- tf.activities[complete.cases(tf.activities), ]
-target_clean <- target[rownames(target) %in% rownames(tf_clean),]
+tf_clean <- as.matrix(tf.activities[complete.cases(tf.activities), ])
+tert_clean <- tert[rownames(tert) %in% rownames(tf_clean), "TERT"]
 
 
 # Mombf
@@ -64,10 +58,10 @@ mombf_model <- function(target, tf.activities) {
   }
 }
 
-beta <- mombf_model(target_clean, tf_clean)
+beta <- mombf_model(tert_clean, tf_clean)
 
 # or
-fit <- modelSelection(target_clean, tf_clean, 
+fit <- modelSelection(tert_clean, tf_clean, 
                       family = "normal",
                       priorCoef = momprior(), 
                       verbose = FALSE)
@@ -89,7 +83,7 @@ model_coef_plot(beta,"TERT regulation model")
 
 # save mombf output
 output <- as.data.frame(coef(fit))
-write.csv(output, file = "~/projects/cell-lines/gdsc/mombf-gdsc.csv")
+write.csv(output, file = "~/projects/cell-lines/gdsc/mombf-tert-gdsc.csv")
 
 
 # filter with margpp > 0.5
@@ -112,12 +106,8 @@ model_coef_plot.fil(beta.fil, "TERT regulation model", "~/projects/cell-lines/gd
 
 
 # check for GABPA control
-any(tf == "GABPA")
-any(expr == "GABPA")
-any(tf.candidates == "GABPA") 
-any(colnames(tf_clean) == "GABPA") 
 any(rownames(output) == "GABPA") 
 any(tf.candidates.fil == "GABPA") # margpp of GABPA < 0.5
-
+# GABPA not sig. 
 ctr <- output[rownames(output) == "GABPA", ] 
-
+print(ctr)
