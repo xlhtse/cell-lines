@@ -46,6 +46,7 @@ sum(is.na(tf.activities)) # tf.activities contains NA values
 tf_clean <- tf.activities[complete.cases(tf.activities), ]
 target_clean <- target[rownames(target) %in% rownames(tf_clean),]
 
+
 # Mombf
 # mombf model fit -- function adapted from celine
 mombf_model <- function(target, tf.activities) {
@@ -74,7 +75,6 @@ sampl <- rnlp(msfit=fit)
 beta <- colMeans(sampl)[c(-1, -ncol(sampl))]
 
 
-
 # plot beta -- function adapted from celine
 model_coef_plot <-function(coef,title){
   gene_names <- tf.candidates
@@ -86,6 +86,10 @@ model_coef_plot <-function(coef,title){
 
 model_coef_plot(beta,"TERT regulation model")
 
+
+# save mombf output
+output <- as.data.frame(coef(fit))
+write.csv(output, file = "~/projects/cell-lines/gdsc/mombf-gdsc.csv")
 
 
 # filter with margpp > 0.5
@@ -105,12 +109,6 @@ model_coef_plot.fil <- function(coef, title, filename) {
 }
 
 model_coef_plot.fil(beta.fil, "TERT regulation model", "~/projects/cell-lines/gdsc/mombf-tert-gdsc.png")
-
-
-# save mombf output
-output <- as.data.frame(coef(fit))
-write.csv(output, file = "~/projects/cell-lines/gdsc/mombf-gdsc.csv")
-
 
 
 # check for GABPA control
