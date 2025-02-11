@@ -63,6 +63,10 @@ model_coef_plot <-function(coef,title){
 model_coef_plot(beta,"TERT regulation model")
 
 
+# save mombf output
+output <- as.data.frame(coef(fit))
+write.csv(output, file = "~/projects/cell-lines/ccle/mombf-tert-ccle.csv")
+
 
 # filter with margpp > 0.5
 filter <- output[output$margpp >= 0.5, ]
@@ -81,11 +85,6 @@ model_coef_plot.fil <- function(coef, title, filename) {
 }
 
 model_coef_plot.fil(beta.fil, "TERT regulation model", "~/projects/cell-lines/ccle/mombf-tert-ccle.png")
-
-
-# save mombf output
-output <- as.data.frame(coef(fit))
-write.csv(output, file = "~/projects/cell-lines/ccle/mombf-tert-ccle.csv")
 
 
 # positive control GAPBA exist
