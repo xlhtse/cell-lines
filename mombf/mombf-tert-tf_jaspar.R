@@ -16,12 +16,17 @@ expr <- d[-(2:3), -(2:3)] %>%
   column_to_rownames(var = "model_name")
 
 # TFs present within 10kb or 1kb upstream of TERT genomic region  (retrieve from UCSC - Jaspar)
-tf_ls_10kb <- unique(tf_10kb$TFName)
-tf_ls_1kb <- unique(tf_1kb$TFName)
-tf_ls_500b <- unique(tf_500b$TFName)
+tf_ls_10kb <- unique(tf_10kb$TFName[tf_10kb$strand == "-"])
+tf_ls_1kb <- unique(tf_1kb$TFName[tf_1kb$strand == "-"])
+tf_ls_500b <- unique(tf_500b$TFName[tf_500b$strand == "-"])
+
+print(length(tf_ls_10kb))
+print(length(tf_ls_1kb))
+print(length(tf_ls_500b))
 
 common <- Reduce(intersect, list(tf_ls_10kb, tf_ls_1kb, tf_ls_500b))
 unique_10kb <- setdiff(tf_ls_10kb, union(tf_ls_1kb, tf_ls_500b))
+print(unique_10kb)
 
 tf_expr_10kb <- expr[ , colnames(expr) %in% tf_ls_10kb]
 tf_expr <- expr[ , colnames(expr) %in% tf_ls_1kb]
