@@ -10,28 +10,22 @@ if (length(args) != 1) {
   stop("Please provide exactly one argument: <file_path>")
 }
 
-<<<<<<< HEAD
 # Assign argument to variable
 file_path <- args[[1]]
 
 # Print the file path
 cat("File path:", file_path, "\n")
-=======
-# TFs present within 10kb or 1kb upstream of TERT genomic region  (retrieve from UCSC - Jaspar)
-tf_ls_10kb <- unique(tf_10kb$TFName[tf_10kb$strand == "-"])
-tf_ls_1kb <- unique(tf_1kb$TFName[tf_1kb$strand == "-"])
-tf_ls_500b <- unique(tf_500b$TFName[tf_500b$strand == "-"])
 
-print(length(tf_ls_10kb))
-print(length(tf_ls_1kb))
-print(length(tf_ls_500b))
+# Read the CSV file
+ tf <- read.csv(file_path, header = TRUE, check.names = FALSE)
 
-common <- Reduce(intersect, list(tf_ls_10kb, tf_ls_1kb, tf_ls_500b))
-unique_10kb <- setdiff(tf_ls_10kb, union(tf_ls_1kb, tf_ls_500b))
-print(unique_10kb)
+# Load expression data from cell model passport (modified from rnaseq_merged_rsem_tpm_20250117.csv)
+ expr <- read.csv("../data/expr.csv")
+ 
+ # TFs present within TERT genomic region (retrieve from UCSC - Jaspar)
+ tf_ls <- unique(tf$TFName)
+ tf_expr <- expr[ , colnames(expr) %in% tf_ls]
 
-tf_expr_10kb <- expr[ , colnames(expr) %in% tf_ls_10kb]
-tf_expr <- expr[ , colnames(expr) %in% tf_ls_1kb]
 
 # convert table to numeric
 convert_table_to_numeric <- function(table) {
@@ -99,9 +93,9 @@ model_coef_plot <- function(coef, title, filename) {
   dev.off()  # Close the PNG device
 }
 
-model_coef_plot(beta.fil_10kb, "TERT regulation model_10kb", "~/projects/cell-lines/mombf/mombf-tf_10kbup_jaspar.png")
-model_coef_plot(beta.fil, "TERT regulation model_1kb", "~/projects/cell-lines/mombf/mombf-tf_1kbup_jaspar.png")
+plot_file <- sub("\\.csv$", ".png", basename(file_path))
+model_coef_plot(beta.fil, "TERT regulation model", plot_file)
+
 
 # Check for GABPA
-output_b_10kb["GABPA", ] # 0 beta
 output_b["GABPA", ] # 0 beta
