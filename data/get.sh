@@ -14,18 +14,18 @@ IFS=$'\n\t'
 #   the full reference records (authors, title, journal)
 
 # curl -O https://ftp.expasy.org/databases/cellosaurus/cellosaurus.obo
-curl -O https://ftp.expasy.org/databases/cellosaurus/cellosaurus.txt
-curl -O https://ftp.expasy.org/databases/cellosaurus/cellosaurus_refs.txt
-curl -O https://ftp.expasy.org/databases/cellosaurus/cellosaurus_xrefs.txt
+#curl -O https://ftp.expasy.org/databases/cellosaurus/cellosaurus.txt
+#curl -O https://ftp.expasy.org/databases/cellosaurus/cellosaurus_refs.txt
+#curl -O https://ftp.expasy.org/databases/cellosaurus/cellosaurus_xrefs.txt
 
 
 
 # Cell model passports 
 # Expression - RNA-Seq processed data
 # Merged rnaseq_merged_20250117.zip
-curl -O https://cog.sanger.ac.uk/cmp/download/rnaseq_merged_20250117.zip
-unzip rnaseq_merged_20250117.zip
-rm rnaseq_merged_20250117.zip
+#curl -O https://cog.sanger.ac.uk/cmp/download/rnaseq_merged_20250117.zip
+#unzip rnaseq_merged_20250117.zip
+#rm rnaseq_merged_20250117.zip
 
 
 

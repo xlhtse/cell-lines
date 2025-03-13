@@ -2,19 +2,21 @@ library(tidyr)
 library(tibble)
 library(mombf)
 
-tf_10kb <- read.csv("~/projects/cell-lines/data/tert_tf_jaspar_10kup.csv", header = TRUE, check.names=FALSE)
-tf_1kb <- read.csv("~/projects/cell-lines/data/tert_tf_jaspar_1kup.csv", header = TRUE, check.names=FALSE)
-tf_500b <- read.csv("~/projects/cell-lines/data/tert_tf_jaspar_500up.csv", header = TRUE, check.names=FALSE)
-d <- read.csv("~/projects/cell-lines/data/rnaseq_merged_rsem_tpm_20250117.csv")
+# Retrieve command-line arguments
+args <- commandArgs(trailingOnly = TRUE)
 
-# Formatting
-expr <- d[-(2:3), -(2:3)] %>%
-  t() %>%
-  as.data.frame() %>%
-  setNames(make.unique(as.character(.[1,]))) %>%
-  .[-1,] %>% remove_rownames() %>%
-  column_to_rownames(var = "model_name")
+# Check if the correct number of arguments is provided
+if (length(args) != 1) {
+  stop("Please provide exactly one argument: <file_path>")
+}
 
+<<<<<<< HEAD
+# Assign argument to variable
+file_path <- args[[1]]
+
+# Print the file path
+cat("File path:", file_path, "\n")
+=======
 # TFs present within 10kb or 1kb upstream of TERT genomic region  (retrieve from UCSC - Jaspar)
 tf_ls_10kb <- unique(tf_10kb$TFName[tf_10kb$strand == "-"])
 tf_ls_1kb <- unique(tf_1kb$TFName[tf_1kb$strand == "-"])
@@ -27,9 +29,17 @@ print(length(tf_ls_500b))
 common <- Reduce(intersect, list(tf_ls_10kb, tf_ls_1kb, tf_ls_500b))
 unique_10kb <- setdiff(tf_ls_10kb, union(tf_ls_1kb, tf_ls_500b))
 print(unique_10kb)
+>>>>>>> origin/main
 
-tf_expr_10kb <- expr[ , colnames(expr) %in% tf_ls_10kb]
-tf_expr <- expr[ , colnames(expr) %in% tf_ls_1kb]
+# Read the CSV file
+tf <- read.csv(file_path, header = TRUE, check.names = FALSE)
+
+# Load expression data from cell model passport (modified from rnaseq_merged_rsem_tpm_20250117.csv)
+expr <- read.csv("../data/expr.csv")
+
+# TFs present within TERT genomic region (retrieve from UCSC - Jaspar)
+tf_ls <- unique(tf$TFName)
+tf_expr <- expr[ , colnames(expr) %in% tf_ls]
 
 # convert table to numeric
 convert_table_to_numeric <- function(table) {
@@ -41,26 +51,25 @@ convert_table_to_numeric <- function(table) {
 }
 
 # x (TFs)
-x_10kb <- convert_table_to_numeric(tf_expr_10kb)
 x <- convert_table_to_numeric(tf_expr)
 
 # y (TERT)
 y <- expr[["TERT"]]
 
-identical(length(y), nrow(x_10kb))
-identical(length(y), nrow(x))
-sum(is.na(y))
-sum(is.na(x_10kb)) 
-sum(is.na(x))
+# data check
+if (!identical(length(y), nrow(x))) {
+  stop("length(y) is not equal to nrow(x)")
+} 
+if (sum(is.na(y)) != 0) {
+  stop("There is value missing in y")
+}
+if (sum(is.na(x)) != 0) {
+  stop("There is value missing in x")
+} else {
+  cat("data check pass\n")
+}
 
 # mombf 
-fit_10kb <- modelSelection(y, x_10kb, 
-                      family = "normal",
-                      priorCoef = momprior(), 
-                      verbose = FALSE)
-sampl_10kb <- rnlp(msfit = fit_10kb)
-beta_10kb <- colMeans(sampl_10kb)[c(-1, -ncol(sampl_10kb))]
-
 fit <- modelSelection(y, x, 
                       family = "normal",
                       priorCoef = momprior(), 
@@ -69,24 +78,22 @@ sampl <- rnlp(msfit = fit)
 beta <- colMeans(sampl)[c(-1, -ncol(sampl))]
 
 # model output 
-output_10kb <- as.data.frame(coef(fit_10kb))
-output_b_10kb <- transform(output_10kb[-c(1, nrow(output_10kb)), ], beta = beta_10kb)
-
 output <- as.data.frame(coef(fit))
 output_b <- transform(output[-c(1, nrow(output)), ], beta = beta)
 
-write.csv(output_b_10kb, "~/projects/cell-lines/mombf/mombf-tf_10kbup_jaspar_beta.csv")
-write.csv(output_b, "~/projects/cell-lines/mombf/mombf-tf_1kbup_jaspar_beta.csv")
+# Generate output file name with suffix "_beta"
+output_file <- sub("\\.csv$", "_beta.csv", basename(file_path))
+
+write.csv(output_b, output_file)
 
 # Filter significant TFs
-filter_10kb <- output_10kb[output_10kb$margpp >= 0.5, ]
-beta.fil_10kb <- beta_10kb[names(beta_10kb) %in% rownames(filter_10kb)]
-
-filter <- output[output$margpp >= 0.5, ]
+filter <- output_b[output_b$margpp >= 0.5, ]
 beta.fil <- beta[names(beta) %in% rownames(filter)]
 
-write.csv(filter_10kb, "~/projects/cell-lines/mombf/mombf-tf_10kbup_jaspar_beta_sig.csv")
-write.csv(filter, "~/projects/cell-lines/mombf/mombf-tf_1kbup_jaspar_beta_sig.csv")
+# Generate filtered output file name with suffix "_beta_sig"
+filtered_output_file <- sub("\\.csv$", "_beta_sig.csv", basename(file_path))
+
+write.csv(filter, filtered_output_file)
 
 # Plot filtered beta
 model_coef_plot <- function(coef, title, filename) {
@@ -100,9 +107,10 @@ model_coef_plot <- function(coef, title, filename) {
   dev.off()  # Close the PNG device
 }
 
-model_coef_plot(beta.fil_10kb, "TERT regulation model_10kb", "~/projects/cell-lines/mombf/mombf-tf_10kbup_jaspar.png")
-model_coef_plot(beta.fil, "TERT regulation model_1kb", "~/projects/cell-lines/mombf/mombf-tf_1kbup_jaspar.png")
+# Generate plot file name with suffix "_beta.png"
+plot_file <- sub("\\.csv$", ".png", basename(file_path))
+
+model_coef_plot(beta.fil, "TERT regulation model", plot_file)
 
 # Check for GABPA
-output_b_10kb["GABPA", ] # 0 beta
 output_b["GABPA", ] # 0 beta
